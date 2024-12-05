@@ -89,3 +89,23 @@ void cetak_alat() {
                alat_lab[i].Jumlah_Unit, alat_lab[i].Jumlah_Tersedia);
     }
 }
+
+// Menu Admin
+void admin_menu() {
+    int pilih;
+    do {
+        printf("\n Selamat Datang Admin! \n");
+        printf("\n---- Menu Admin ----\n");
+        printf("1. Tambah Alat Lab\n");
+        printf("2. Lihat Daftar Alat Lab\n");
+        printf("3. Edit Alat Lab\n");
+        printf("4. Hapus Alat Lab\n");
+        printf("5. Keluar\n");
+        printf("Pilih Opsi: ");
+        scanf("%d", &pilih);
+
+        if (pilih == 1) {
+            if (total_alat >= MAX_ALAT) {
+                printf("Jumlah Alat Lab Mencapai Batas Maksimum.\n");
+                continue;
+            }
