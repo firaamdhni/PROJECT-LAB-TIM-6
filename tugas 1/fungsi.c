@@ -235,7 +235,67 @@ int login(char *role) {
         printf("File user.txt tidak ditemukan.\n");
         return 0;
     }
-
     char username[50], password[50], input_user[50], input_pass[50];
     char user_role[10];
+    
+    printf("Login sebagai (admin/user): ");
+    scanf("%s", role); // Pilih role
 
+    if (strcmp(role, "admin") != 0 && strcmp(role, "user") != 0) {
+        printf("Role tidak valid. Program keluar.\n");
+        fclose(file);
+        return 0;
+    }
+
+    printf("Masukkan username: ");
+    scanf("%s", input_user);
+    printf("Masukkan password: ");
+    scanf("%s", input_pass);
+
+    // Membaca file user.txt untuk mencocokkan username, password, dan role
+    while (fscanf(file, "%49[^,],%49[^,],%9[^\n]\n", username, password, user_role) != EOF) {
+        if (strcmp(input_user, username) == 0 && strcmp(input_pass, password) == 0 && strcmp(user_role, role) == 0) {
+            fclose(file);
+            return 1; // Login berhasil
+        }
+    }
+
+    fclose(file);
+    printf("Login gagal. Username, password, atau role tidak sesuai.\n");
+    return 0; // Login gagal
+}
+
+// Fungsi untuk pinjam alat
+void pinjam_alat() {
+    unsigned int id_alat, jumlah;
+    printf("Masukkan ID Alat yang ingin dipinjam: ");
+    scanf("%u", &id_alat);
+
+    printf("Masukkan jumlah alat yang ingin dipinjam: ");
+    scanf("%u", &jumlah);
+    
+    // Cek apakah alat ada dan tersedia
+    int found = 0;
+    for (unsigned int i = 0; i < total_alat; i++) {
+        if (alat_lab[i].Id_Alat == id_alat) {
+            found = 1;
+            if (alat_lab[i].Jumlah_Tersedia >= jumlah) {
+                // Jika alat tersedia
+                peminjaman[total_peminjaman].Id_Alat = id_alat;
+                strcpy(peminjaman[total_peminjaman].Nama_Alat, alat_lab[i].Nama_Alat);
+                peminjaman[total_peminjaman].Jumlah_Pinjam = jumlah;
+
+                alat_lab[i].Jumlah_Tersedia -= jumlah;
+                total_peminjaman++;
+                simpan_data();
+                printf("Alat berhasil dipinjam.\n");
+            } else {
+                printf("Jumlah alat yang tersedia tidak cukup.\n");
+            }
+            break;
+        }
+    }
+    if (!found) {
+        printf("Alat dengan ID %u tidak ditemukan.\n", id_alat);
+    }
+}
