@@ -299,3 +299,67 @@ void pinjam_alat() {
         printf("Alat dengan ID %u tidak ditemukan.\n", id_alat);
     }
 }
+
+
+// Fungsi untuk melihat alat yang dipinjam
+void lihat_alat_pinjam() {
+    printf("\n---- Alat yang Dipinjam ----\n");
+    if (total_peminjaman == 0) {
+        printf("Belum ada alat yang dipinjam.\n");
+    } else {
+        printf("-----------------------------------------------------\n");
+        printf("| %-10s | %-20s | %-15s |\n", 
+         "ID Alat", "Nama Alat", "Jumlah Pinjam"); 
+        printf("------------------------------------------------------\n");     
+        for (unsigned int i = 0; i < total_peminjaman; i++) {
+            printf("| %-10u | %-20s | %-15u |\n",
+                   peminjaman[i].Id_Alat,
+                   peminjaman[i].Nama_Alat,
+                   peminjaman[i].Jumlah_Pinjam);
+        }
+        printf("-------------------------------------------------------\n");
+    }
+}
+
+// Fungsi untuk mengembalikan alat
+void kembalikan_alat() {
+    unsigned int id_alat, jumlah;
+    printf("Masukkan ID Alat yang ingin dikembalikan: ");
+    scanf("%u", &id_alat);
+
+    printf("Masukkan jumlah alat yang ingin dikembalikan: ");
+    scanf("%u", &jumlah);
+
+    // Cek apakah alat yang dipinjam ada
+    int found = 0;
+    for (unsigned int i = 0; i < total_peminjaman; i++) {
+        if (peminjaman[i].Id_Alat == id_alat) {
+            found = 1;
+            if (peminjaman[i].Jumlah_Pinjam >= jumlah) {
+                // Kurangi jumlah yang dipinjam dan kembalikan ke alat lab
+                peminjaman[i].Jumlah_Pinjam -= jumlah;
+                for (unsigned int j = 0; j < total_alat; j++) {
+                    if (alat_lab[j].Id_Alat == id_alat) {
+                        alat_lab[j].Jumlah_Tersedia += jumlah;
+                        break;
+                    }
+                }
+                // Jika jumlah pinjaman menjadi 0, hapus dari list peminjaman
+                if (peminjaman[i].Jumlah_Pinjam == 0) {
+                    for (unsigned int j = i; j < total_peminjaman - 1; j++) {
+                        peminjaman[j] = peminjaman[j + 1];
+                    }
+                    total_peminjaman--;
+                }
+                simpan_data();
+                printf("Alat berhasil dikembalikan.\n");
+            } else {
+                printf("Jumlah alat yang dipinjam lebih sedikit dari jumlah yang ingin dikembalikan.\n");
+            }
+            break;
+        }
+    }
+    if (!found) {
+        printf("Alat dengan ID %u tidak ditemukan dalam daftar peminjaman.\n", id_alat);
+    }
+}
