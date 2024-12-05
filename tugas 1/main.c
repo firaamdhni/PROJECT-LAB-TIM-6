@@ -20,3 +20,16 @@ int main(int argc, char *argv[]) {
             return 1;
         }
     }
+
+    // Tampilkan menu berdasarkan role
+    if (strcmp(role, "admin") == 0) {  
+        admin_menu();
+    } else if (strcmp(role, "user") == 0) {
+        user_menu();
+    } else {
+        printf("Role tidak dikenal. Program keluar.\n");
+        return 1;
+    }
+
+    return 0;
+}
