@@ -109,3 +109,37 @@ void admin_menu() {
                 printf("Jumlah Alat Lab Mencapai Batas Maksimum.\n");
                 continue;
             }
+
+            printf("Masukkan ID Alat: ");
+            scanf("%u", &alat.Id_Alat);
+            printf("Ma Alat_Lab alat;sukkan Nama Alat: ");
+            scanf("%s", alat.Nama_Alat);
+            printf("Masukkan Merek: ");
+            scanf("%s", alat.Merek);
+            printf("Masukkan Model: ");
+            scanf("%s", alat.Model);
+            printf("Masukkan Tahun Produksi: ");
+            scanf("%u", &alat.Tahun_Produksi);
+            printf("Masukkan Jumlah Unit: ");
+            scanf("%u", &alat.Jumlah_Unit);
+            alat.Jumlah_Tersedia = alat.Jumlah_Unit;
+            alat_lab[total_alat++] = alat;
+            simpan_data();
+            printf("Alat Lab Berhasil Ditambahkan.\n");
+        } else if (pilih == 2) {
+            printf("\n---- Daftar Alat Lab ----\n");
+            printf("----------------------------------------------------------------------------------------------------------------------------\n");
+            printf("| %-10s | %-20s | %-15s | %-15s | %-15s | %-12s | %-15s |\n",
+            "ID Alat", "Nama Alat", "Merek", "Model", "Tahun Produksi", "Jumlah Unit", "Jumlah Tersedia");  
+            printf("----------------------------------------------------------------------------------------------------------------------------\n");
+            for (unsigned int i = 0; i < total_alat; i++) {
+                printf("| %-10u | %-20s | %-15s | %-15s | %-15u | %-12u | %-15u |\n",
+                alat_lab[i].Id_Alat,
+                alat_lab[i].Nama_Alat,
+                alat_lab[i].Merek,
+                alat_lab[i].Model,
+                alat_lab[i].Tahun_Produksi,
+                alat_lab[i].Jumlah_Unit,
+                alat_lab[i].Jumlah_Tersedia);
+        }
+            printf("----------------------------------------------------------------------------------------------------------------------------\n");
